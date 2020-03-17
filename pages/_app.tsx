@@ -1,22 +1,20 @@
 import "../styles.css";
-import App from "next/app";
-import React from "react";
 import withRematch, { Store } from "../lib/withRematch";
 import { Provider } from "react-redux";
+import { NextComponentType, NextPageContext } from "next";
 
 interface Props {
+  Component: NextComponentType<NextPageContext, any, {}>;
+  pageProps: any;
   reduxStore: Store;
 }
 
-class MyApp extends App<Props & any> {
-  render() {
-    const { Component, pageProps, reduxStore } = this.props;
-    return (
-      <Provider store={reduxStore}>
-        <Component {...pageProps} />
-      </Provider>
-    );
-  }
-}
+const MyApp = ({ Component, pageProps, reduxStore }: Props) => {
+  return (
+    <Provider store={reduxStore}>
+      <Component {...pageProps} />
+    </Provider>
+  );
+};
 
 export default withRematch(MyApp);

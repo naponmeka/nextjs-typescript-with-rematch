@@ -1,8 +1,7 @@
 import React from "react";
-
 import { initializeStore } from "../store";
 import { RootModel } from "../models";
-import App, { AppContext } from "next/app";
+import { AppContext } from "next/app";
 
 const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 const checkServer = () => {
@@ -35,8 +34,8 @@ declare module "next" {
   }
 }
 
-const withRematch = (Component: React.ComponentClass<Props>) => {
-  return class AppWithRematch extends React.Component {
+const withRematch = (A: (props: any) => JSX.Element) => {
+  return class AppWithRematch extends React.Component<Props> {
     reduxStore: any;
     static async getInitialProps(appContext: AppContext) {
       const reduxStore = getOrCreateStore();
@@ -44,8 +43,8 @@ const withRematch = (Component: React.ComponentClass<Props>) => {
       appContext.ctx.reduxStore = reduxStore;
 
       let appProps = {};
-      if ((Component as any).getInitialProps) {
-        appProps = await (Component as any).getInitialProps(appContext);
+      if ((A as any).getInitialProps) {
+        appProps = await (A as any).getInitialProps(appContext);
       }
 
       return {
@@ -60,7 +59,7 @@ const withRematch = (Component: React.ComponentClass<Props>) => {
     }
 
     render() {
-      return <Component {...this.props} reduxStore={this.reduxStore} />;
+      return <A {...this.props} reduxStore={this.reduxStore} />;
     }
   };
 };
