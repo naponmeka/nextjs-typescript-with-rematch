@@ -25,11 +25,11 @@ export const farm = {
     }
   },
   effects: (dispatch: Dispatch) => ({
-    async incrementEggAsync() {
+    async incrementEggAsync(): Promise<void> {
       await new Promise(resolve => setTimeout(resolve, 500));
       dispatch.farm.incrementEgg();
     },
-    async incrementChickenAsync(payload: number) {
+    async incrementChickenAsync(payload: number): Promise<void> {
       await new Promise(resolve => setTimeout(resolve, 500));
       dispatch.farm.incrementChicken(payload);
     }
